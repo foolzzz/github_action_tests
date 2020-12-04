@@ -1,4 +1,4 @@
-name: Github Action Demo Test
+name: macOS kernel build
 
 on:
   push:
@@ -7,22 +7,29 @@ on:
 
 
 jobs:
-  job1:
-    name: Build Job
-    runs-on: ubuntu-latest
+  build:
+    name: Build macOS kernel
+    runs-on: macos-10.15
+
     steps:
-      - name: "Step 1"
-        run: |
-            echo Hello World!
+    - uses: actions/checkout@v2.1.0
 
-      - name: "Step 2 checkout"
-        uses: actions/checkout@v2
+    - name: Set up Python 2.7
+      uses: actions/setup-python@2
+      with:
+        python-version: 2.7
 
-      - name: "Step 3 make"
-        run: |
-            make
-      - name: Step 4 run
-        run: |
-            ./main
-        
+    - name: Build Kernel for macOS
+      id: build_kernel_
+      run: |
+        sudo xcode-select -s /Application/Xcode_11.6.app
 
+    - name: Build 10.15.5 kernel for macOS
+      id: build_kernel_10155
+      run: |
+        sudo xcode-select -s /Application/Xcode_11.6.app
+        export MACOS_SHORT_VERSION=10155
+        export MACOS_VER=10.15.5
+        export XNU_VER=6153.121.1
+        # XNU_VERSION=xnu-$XNU_VER ./build-xnu.sh
+        MACOS_VERSION=$MACOS_VER BACKUP_SDK=1 OPTIONS=RELEASE,DEVELOPMENT ./build-xnu.sh
