@@ -11,6 +11,15 @@ jobs:
     name: Build Job
     runs-on: ubuntu-latest
     steps:
-      - run: |
+      - name: "Step 1"
+        run: |
             echo Hello World!
-            
+
+      - name: "Step 2 checkout"
+        uses: actions/checkout@v2
+
+      - name: "Step 3 make"
+        run: |
+            make
+    
+    
