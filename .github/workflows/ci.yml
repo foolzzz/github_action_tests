@@ -21,5 +21,8 @@ jobs:
       - name: "Step 3 make"
         run: |
             make
-    
-    
+      - name: Step 4 run
+        run: |
+            ./main
+        
+
